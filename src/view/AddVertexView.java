@@ -90,10 +90,11 @@ public class AddVertexView extends BorderPane implements Observer {
 			
 			if (!text.isEmpty()) { //   && (Integer.parseInt(text) < 11 && Integer.parseInt(text) > 0)
 				boolean result = theGraph.add(new Vertex(Integer.parseInt(text)));
-				if (result == true)
+				if (result == true) {
 					responseText.setText("Success! Vertex ("+ Integer.parseInt(text) + ") added to the Graph");
+				}
 				else {
-					if (theGraph.find(Integer.parseInt(text)).getVertexNumber() != 9999)
+					if (theGraph.find(Integer.parseInt(text)) != -1)
 						responseText.setText("Error! Vertex (" + Integer.parseInt(text) + ") is already in the Graph!");
 					else if (theGraph.getSize() == 10)
 						responseText.setText("Error! There are already 10 vertices in the Graph!");

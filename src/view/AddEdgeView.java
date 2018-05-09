@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import model.Edge;
+//import model.Edge;
 //import model.BFS;
 import model.Graph;
 import model.Vertex;
@@ -101,22 +101,20 @@ public class AddEdgeView extends BorderPane implements Observer {
 			String text2 = textField2.getText();
 			
 			if (!text1.isEmpty() && !text2.isEmpty()) { // && (Integer.parseInt(text) < 11 && Integer.parseInt(text) > 0)
-				Vertex startV = theGraph.find(Integer.parseInt(text1));
-				Vertex endV = theGraph.find(Integer.parseInt(text2));
-				if (startV.getVertexNumber() != -9999 && endV.getVertexNumber() != -9999) {
-					Edge edge = theGraph.findEdge(startV,endV);
-					if (edge.getWeight() == -9999) {
-						edge.setWeight(1);
-						theGraph.addEdge(edge);
+				int index1 = theGraph.find(Integer.parseInt(text1));
+				int index2 = theGraph.find(Integer.parseInt(text2));
+				if (index1 != -1 && index2 != -1) {
+					if (theGraph.findEdge(theGraph.getVertices()[index1],theGraph.getVertices()[index2]) == -1) {
+						theGraph.addEdge(theGraph.getVertices()[index1], theGraph.getVertices()[index2]);
 						responseText.setText("Success! Edge ("+text1+"-->"+text2+") added!");
 					}
 					else 
 						responseText.setText("Error! Edge already exists!");
 				}
 				else {
-					if (startV.getVertexNumber() != -9999)
+					if (index1 != -1)
 						responseText.setText("Error! Vertex (" + text1 + ") does not exist!");
-					else if (endV.getVertexNumber() != -9999)
+					else if (index2 != -1)
 						responseText.setText("Error! Vertex (" + text2 + ") does not exist!");
 				}
 			} else {

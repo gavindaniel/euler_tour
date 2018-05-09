@@ -57,6 +57,29 @@ public class Vertex {
 		}
 	}
 	
+	public void removeAdjacentVertex(Vertex v) {
+		// check if the vertex is already in the array
+		if (!checkForAdjacentVertex(v)) { // if it does already exist in the array
+			System.out.println("Error!! This vertex is not in the adjacent array!!");
+		}
+		else { // the vertex does not already exist so add it
+//			 check if this is the first edge in the array
+				Vertex[] temp = adjacent;
+				int[] tempW = weights;
+				int count = 0;
+				adjacent = new Vertex[temp.length - 1]; // creates a new array with the old size + 1
+				weights = new int[tempW.length - 1];
+				for (int i = 0; i < temp.length; i++) {
+					if (temp[i].getVertexNumber() != v.getVertexNumber()) {
+						adjacent[count] = temp[i];
+						weights[count] = tempW[i];
+						count++;
+					}
+					else continue;
+				}
+		}
+	}
+	
 	public boolean checkForAdjacentVertex(Vertex v) {
 		for (int i = 0; i < adjacent.length; i++) {
 			if (adjacent[i].getVertexNumber() == v.getVertexNumber())

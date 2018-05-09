@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import model.DFS;
 import model.Euler;
 //import model.BFS;
 import model.Graph;
@@ -89,9 +90,12 @@ public class EulerView extends BorderPane implements Observer {
 			String text = textField.getText();
 			
 			if (!text.isEmpty() && (Integer.parseInt(text) < 11 && Integer.parseInt(text) > 0)) {
-//				bfs = new BFS(theGraph);
-//				String result = bfs.start(Integer.parseInt(text));
-//				responseText.setText("BFS for Vertex " + text + " -> " + result); //theGraph.BFS(Integer.parseInt(text)));
+//				DFS dfs = new DFS(theGraph);
+//				Euler euler = new Euler(theGraph);
+//				String result = dfs.start(Integer.parseInt(text));
+				String result = euler.start(Integer.parseInt(text));
+				responseText.setText("Euler Path for Vertex " + text + " -> " + result); //theGraph.BFS(Integer.parseInt(text)));
+				euler = new Euler(Graph.graph1());
 				
 			} else {
 				responseText.setText("Please enter a valid vertex number");
