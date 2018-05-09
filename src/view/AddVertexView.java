@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 //import model.BFS;
 import model.Graph;
+import model.Vertex;
 
 public class AddVertexView extends BorderPane implements Observer {
 
@@ -52,14 +53,14 @@ public class AddVertexView extends BorderPane implements Observer {
 	private void initializePane() {
 		// TODO: init grid pane variables like text fields, labels, buttons, etc.
 		// create button
-		button = new Button("Search");
+		button = new Button("Add");
 		// create input text field
 		textField = new TextField();
 		// make the input text field editable
 		textField.setEditable(true);
 		// create response text
-		responseText = new Label("Enter a Vertex to perform BFS from");
-		functionHeader = new Label("Breadth First Search");
+		responseText = new Label("Enter a Vertex to add to the Graph");
+		functionHeader = new Label("Add Vertex");
 		// set grid pane width & height
 		gp.setPrefSize(width, height);
 		// add button listener
@@ -87,11 +88,16 @@ public class AddVertexView extends BorderPane implements Observer {
 			// TODO Auto-generated method stub
 			String text = textField.getText();
 			
-			if (!text.isEmpty() && (Integer.parseInt(text) < 11 && Integer.parseInt(text) > 0)) {
-//				bfs = new BFS(theGraph);
-//				String result = bfs.start(Integer.parseInt(text));
-//				responseText.setText("BFS for Vertex " + text + " -> " + result); //theGraph.BFS(Integer.parseInt(text)));
-				
+			if (!text.isEmpty()) { //   && (Integer.parseInt(text) < 11 && Integer.parseInt(text) > 0)
+				boolean result = theGraph.add(new Vertex(Integer.parseInt(text)));
+				if (result == true)
+					responseText.setText("Success! Vertex ("+ Integer.parseInt(text) + ") added to the Graph");
+				else {
+					if (theGraph.find(Integer.parseInt(text)).getVertexNumber() != 9999)
+						responseText.setText("Error! Vertex (" + Integer.parseInt(text) + ") is already in the Graph!");
+					else if (theGraph.getSize() == 10)
+						responseText.setText("Error! There are already 10 vertices in the Graph!");
+				}
 			} else {
 				responseText.setText("Please enter a valid vertex number");
 			}

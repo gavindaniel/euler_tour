@@ -10,8 +10,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import model.Edge;
 //import model.BFS;
 import model.Graph;
+import model.Vertex;
 
 public class AddEdgeView extends BorderPane implements Observer {
 
@@ -21,8 +23,11 @@ public class AddEdgeView extends BorderPane implements Observer {
 	// view variable(s)
 	private GridPane gp;
 	private Button button;
-	private TextField textField;
+	private TextField textField1;
+	private TextField textField2;
 	private Label responseText;
+	private Label startLabel;
+	private Label endLabel;
 	private Label functionHeader;
 	// static variable(s)
 	public static final int width = 800;
@@ -52,14 +57,18 @@ public class AddEdgeView extends BorderPane implements Observer {
 	private void initializePane() {
 		// TODO: init grid pane variables like text fields, labels, buttons, etc.
 		// create button
-		button = new Button("Search");
+		button = new Button("Add");
 		// create input text field
-		textField = new TextField();
+		textField1 = new TextField();
+		textField2 = new TextField();
 		// make the input text field editable
-		textField.setEditable(true);
+		textField1.setEditable(true);
+		textField2.setEditable(true);
 		// create response text
-		responseText = new Label("Enter a Vertex to perform BFS from");
-		functionHeader = new Label("Breadth First Search");
+		responseText = new Label("Enter an Edge to add to the Graph");
+		startLabel = new Label("Starting Vertex");
+		endLabel = new Label("End Vertex");
+		functionHeader = new Label("Add Edge");
 		// set grid pane width & height
 		gp.setPrefSize(width, height);
 		// add button listener
@@ -68,12 +77,15 @@ public class AddEdgeView extends BorderPane implements Observer {
 		button.setOnAction(handler);
 		// set position
 		GridPane.setConstraints(functionHeader, 1, 1);
-		GridPane.setConstraints(textField, 1, 2);
-		GridPane.setConstraints(button, 2, 2);
+		GridPane.setConstraints(startLabel, 0, 2);
+		GridPane.setConstraints(textField1, 1, 2);
+		GridPane.setConstraints(endLabel, 2, 2);
+		GridPane.setConstraints(textField2, 3, 2);
+		GridPane.setConstraints(button, 4, 2);
 		GridPane.setConstraints(responseText, 1, 3);
 		gp.setHgap(10);
 		gp.setVgap(10);
-		gp.getChildren().addAll(functionHeader, textField, button, responseText);
+		gp.getChildren().addAll(functionHeader, startLabel, textField1, endLabel, textField2, button, responseText);
 		
 		// TODO: add any listeners
 		
@@ -85,17 +97,33 @@ public class AddEdgeView extends BorderPane implements Observer {
 		@Override
 		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub
-			String text = textField.getText();
+			String text1 = textField1.getText();
+			String text2 = textField2.getText();
 			
-			if (!text.isEmpty() && (Integer.parseInt(text) < 11 && Integer.parseInt(text) > 0)) {
-//				bfs = new BFS(theGraph);
-//				String result = bfs.start(Integer.parseInt(text));
-//				responseText.setText("BFS for Vertex " + text + " -> " + result); //theGraph.BFS(Integer.parseInt(text)));
-				
+			if (!text1.isEmpty() && !text2.isEmpty()) { // && (Integer.parseInt(text) < 11 && Integer.parseInt(text) > 0)
+				Vertex startV = theGraph.find(Integer.parseInt(text1));
+				Vertex endV = theGraph.find(Integer.parseInt(text2));
+				if (startV.getVertexNumber() != -9999 && endV.getVertexNumber() != -9999) {
+					Edge edge = theGraph.findEdge(startV,endV);
+					if (edge.getWeight() == -9999) {
+						edge.setWeight(1);
+						theGraph.addEdge(edge);
+						responseText.setText("Success! Edge ("+text1+"-->"+text2+") added!");
+					}
+					else 
+						responseText.setText("Error! Edge already exists!");
+				}
+				else {
+					if (startV.getVertexNumber() != -9999)
+						responseText.setText("Error! Vertex (" + text1 + ") does not exist!");
+					else if (endV.getVertexNumber() != -9999)
+						responseText.setText("Error! Vertex (" + text2 + ") does not exist!");
+				}
 			} else {
-				responseText.setText("Please enter a valid vertex number");
+				responseText.setText("Please enter a valid edge");
 			}
-			textField.setText("");
+			textField1.setText("");
+			textField2.setText("");
 		}
 		
 	}

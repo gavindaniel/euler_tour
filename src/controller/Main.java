@@ -40,7 +40,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// set stage title
-		primaryStage.setTitle("Graphs 'n' Stuff");
+		primaryStage.setTitle("Euler...Euler...");
 		// create new window to put stuff in
 		window = new BorderPane();
 		// create new scene to put window in

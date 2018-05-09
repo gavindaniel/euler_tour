@@ -10,13 +10,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import model.Euler;
 //import model.BFS;
 import model.Graph;
 
 public class EulerView extends BorderPane implements Observer {
 
 	// model variable(s)
-//	private BFS bfs;
+	private Euler euler;
 	private Graph theGraph;
 	// view variable(s)
 	private GridPane gp;
@@ -39,7 +40,7 @@ public class EulerView extends BorderPane implements Observer {
 		// set the graph
 		theGraph = g;
 		// init the BFS
-//		bfs = new BFS(theGraph);
+		euler = new Euler(theGraph);
 		// init grid pane
 		gp = new GridPane();
 		// set grid pane to center
@@ -58,8 +59,8 @@ public class EulerView extends BorderPane implements Observer {
 		// make the input text field editable
 		textField.setEditable(true);
 		// create response text
-		responseText = new Label("Enter a Vertex to perform BFS from");
-		functionHeader = new Label("Breadth First Search");
+		responseText = new Label("Enter a Vertex to start the euler path from");
+		functionHeader = new Label("Euler Tour Path");
 		// set grid pane width & height
 		gp.setPrefSize(width, height);
 		// add button listener
