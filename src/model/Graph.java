@@ -113,10 +113,7 @@ public class Graph extends Observable {
 		Vertex v8 = new Vertex(8);
 		Vertex v9 = new Vertex(9);
 		Vertex v10 = new Vertex(10);
-		// init edges 
-//		Edge e1 = new Edge(v1, v2, 1);
-//		v1.addEdge(e1);
-		
+		// add vertices to graph
 		g.add(v1);
 		g.add(v2);
 		g.add(v3);
@@ -125,55 +122,33 @@ public class Graph extends Observable {
 		g.add(v6);
 		g.add(v7);
 		g.add(v8);
+		g.add(v9);
+		g.add(v10);
 		
 		// vertex 1 adjacent
-//		v1.addAdjacentVertex(v2, 1);
 		g.addEdge(v1,v2);
 		// vertex 2 adjacent
-//		v2.addAdjacentVertex(v3, 1);
 		g.addEdge(v2,v3);
 		// vertex 3 adjacent
-//		v3.addAdjacentVertex(v4, 1);
 		g.addEdge(v3,v4);
 		// vertex 4 adjacent
-//		v4.addAdjacentVertex(v6, 1);
 		g.addEdge(v4,v6);
 		// vertex 5 adjacent
-//		v5.addAdjacentVertex(v8, 1);
 		g.addEdge(v5,v8);
 		// vertex 6 adjacent
-//		v6.addAdjacentVertex(v5, 1);
 		g.addEdge(v6,v5);
+		g.addEdge(v6, v9);
 		// vertex 7 adjacent
-//		v7.addAdjacentVertex(v6, 1);
 		g.addEdge(v7,v6);
 		// vertex 8 adjacent
-//		v8.addAdjacentVertex(v7, 1);
 		g.addEdge(v8,v7);
-		
 		// vertex 9 adjacent
-//		v9.addAdjacentVertex(v8, 1);
-//		v9.addAdjacentVertex(v10, 3);
+		g.addEdge(v9, v10);
 		// vertex 10 adjacent
-//		v10.addAdjacentVertex(v8, 2);
-//		v10.addAdjacentVertex(v9, 3);
-		
-		// add vertices to graph
-//		g.add(v1);
-//		g.add(v2);
-//		g.add(v3);
-//		g.add(v4);
-//		g.add(v5);
-//		g.add(v6);
-//		g.add(v7);
-//		g.add(v8);
-//		g.add(v9);
-//		g.add(v10);
+		g.addEdge(v10, v1);
 		// set root of graph
 		g.setRoot(v1);
-		// add vertices to graph
-		
-		
+		// return the graph
 		return g;
 		
 	}

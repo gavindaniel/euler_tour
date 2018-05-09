@@ -5,24 +5,35 @@ public class Euler {
 	private Graph _graph;
 	private String _result;
 	private boolean[] _visited;
+	private Edge[] _queue;
 	
 	// constructor 
 	public Euler(Graph g) {
 		_graph = g;
 		_result = "";
-		_visited = new boolean[10]; //size
+		_visited = new boolean[g.getEdges().length]; //size
+		_queue = new Edge[0];
 	}
 	
 	public String start(int starting_vertex) {
-		System.out.print("Start (" + starting_vertex + ") -> ");
-		tour(_graph.getVertices()[starting_vertex - 1], _graph.getEdges());
-//		_result = search(_graph.getVertices()[starting_vertex - 1], _visited, _result);
-		System.out.println("End");
+		_result = search(_graph.getVertices()[starting_vertex - 1], _queue, _visited, _result);
+		_result += "End";
+		boolean success = true;
+		for (int i = 0; i < _visited.length; i++) {
+			if (_visited[i] == false) {
+				success = false;
+				break;
+			}
+		}
+		if (success) {
+			String temp = _result;
+			_result = "Success! Euler path found!\nEuler Path Start -> " + temp;
+		} else 
+			_result = "Error! No path found";
 		return _result;
 	}
 	
 	public void tour(Vertex currentV, Edge[] edges) {
-//		Vertex adjacentV = new Vertex();
 		if (edges.length >= 0) {
 			System.out.print(currentV.getVertexNumber());
 			if (currentV.getAdjacentVertices().length > 0) { 
@@ -46,44 +57,79 @@ public class Euler {
 		return;
 	}
 	
-//	public String search(Vertex currentV, boolean[] visited, String result) {
-//		String out = "";
-//		visited[currentV.getVertexNumber()-1] = true;
-//		System.out.print(currentV.getVertexNumber() + " ");
-//		result += currentV.getVertexNumber() + " ";
-//		
-//		Vertex[] adjV = currentV.getAdjacentVertices();
-//
-//		for (int i = 0; i < adjV.length; i++) {
-//			boolean flag = false;
-//			for (int j = 0; j < temp.length; j++) {
-//				if (adjV[i].getVertexNumber() == temp[j].getVertexNumber())
-//					flag = true;
-//			}
-//			if (!flag) {
-//				temp = stack;
-//				stack = new Vertex[stack.length + 1];
-//				for (int k = 0; k < temp.length; k++) {
-//					stack[k] = temp[k];
-//				}
-//				stack[temp.length] = adjV[i];
-//			}
-//		}
-//		boolean done = true;
-//		for (int i = 0; i < visited.length; i++) {
-//			if (visited[i] == false) {
-//				done = false;
-//			}
-//		}
-//		
-//		if (!done && stack.length > 0)
-//			for (int i = 0; i < stack.length; i++) {
-//				if (!visited[stack[i].getVertexNumber()-1])
-//					out = search(stack[i], stack, visited, result);
-//			}
-//		else if (done)
-//			out = result;
-//		
-//		return out;
-//	}
+	public String search(Vertex currentV, Edge[] queue, boolean[] visited, String result) {
+		String out = "";
+		Vertex[] adjV = currentV.getAdjacentVertices();
+		Edge[] tempQ = queue;
+		int index = -1; //n
+		
+		for (int i = 0; i < adjV.length; i++) {
+			boolean flag = false;
+			index = _graph.findEdge(currentV, adjV[i]); // n =
+			if (visited[index] == false) {
+				for (int j = 0; j < tempQ.length; j++) {
+					// check if edge is already in the queue
+					if (index != -1) // n !=
+						if (tempQ[j].getStart().getVertexNumber() == _graph.getEdges()[index].getStart().getVertexNumber() && 
+								tempQ[j].getEnd().getVertexNumber() == _graph.getEdges()[index].getEnd().getVertexNumber()) { //getEdges()[n]
+							flag = true; // edge is already in the queue
+							break;
+						}
+				}
+				// if edge was not found, add it to the queue
+				if (!flag) { 
+					tempQ = queue;
+					queue = new Edge[queue.length + 1];
+					for (int k = 0; k < tempQ.length; k++) {
+						queue[k] = tempQ[k];
+					}
+					queue[tempQ.length] = _graph.getEdges()[index];
+				}
+			}
+		}
+		
+		boolean done = true;
+		// check if all edges have been visited
+		for (int i = 0; i < visited.length; i++) { 
+			if (visited[i] == false) {
+				done = false;
+				break;
+			}
+		}
+		// check if we are done visiting edges and if any edges are in the queue
+		if (!done && queue.length > 0) 
+			for (int i = 0; i < queue.length; i++) {
+				index = _graph.findEdge(queue[i].getStart(), queue[i].getEnd()); //int index
+				if (!visited[index]) {
+					if (currentV.getVertexNumber() == queue[i].getStart().getVertexNumber()) {
+						visited[index] = true;
+						Vertex endV = queue[i].getEnd();
+						result += currentV.getVertexNumber() + " -> ";
+						queue = removeEdgeFromQueue(queue, i);
+						out = search(endV, queue, visited, result);
+					}
+				}
+			}
+		else if (done) {
+			result += currentV.getVertexNumber() + " -> ";
+			out = result;
+		}
+		
+		return out;
+	}
+	
+	
+	public Edge[] removeEdgeFromQueue(Edge[] queue, int index) {
+		Edge[] temp = queue;
+		int count = 0;
+		queue = new Edge[temp.length - 1];
+		for (int i = 0; i < temp.length; i++) {
+			if (i != index) {
+				queue[count] = temp[i];
+				count++;
+			} else 
+				continue;
+		}
+		return queue;
+	}
 }

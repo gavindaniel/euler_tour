@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 //import model.BFS;
 import model.Graph;
+import model.Vertex;
 
 public class DisplayGraphView extends BorderPane implements Observer {
 
@@ -23,7 +24,7 @@ public class DisplayGraphView extends BorderPane implements Observer {
 //	private Button button;
 //	private TextField textField;
 //	private Label responseText;
-//	private Label functionHeader;
+	private Label graphTable;
 	// static variable(s)
 	public static final int width = 800;
 	public static final int height = 400;
@@ -59,7 +60,7 @@ public class DisplayGraphView extends BorderPane implements Observer {
 //		textField.setEditable(true);
 		// create response text
 //		responseText = new Label("Enter a Vertex to perform BFS from");
-//		functionHeader = new Label("Breadth First Search");
+		graphTable = new Label(printGraph());
 		// set grid pane width & height
 		gp.setPrefSize(width, height);
 		// add button listener
@@ -67,17 +68,32 @@ public class DisplayGraphView extends BorderPane implements Observer {
 		// set the listener
 //		button.setOnAction(handler);
 		// set position
-//		GridPane.setConstraints(functionHeader, 1, 1);
+		GridPane.setConstraints(graphTable, 1, 1);
 //		GridPane.setConstraints(textField, 1, 2);
 //		GridPane.setConstraints(button, 2, 2);
 //		GridPane.setConstraints(responseText, 1, 3);
-//		gp.setHgap(10);
-//		gp.setVgap(10);
-//		gp.getChildren().addAll(functionHeader, textField, button, responseText);
+		gp.setHgap(10);
+		gp.setVgap(10);
+		gp.getChildren().addAll(graphTable); //functionHeader, textField, button, responseText
 		
 		// TODO: add any listeners
 		
 		
+	}
+	
+	public String printGraph() {
+		String output = "\tVertex\t|\tAdjacent Vertices\n";
+		output += "---------------------------------------\n";
+		Vertex[] vertices = theGraph.getVertices();
+		for (int i = 0; i < theGraph.getNumVertices(); i++) {
+			output += "\t\t" + vertices[i].getVertexNumber() + "\t|\t";
+			Vertex[] adjacent = vertices[i].getAdjacentVertices();
+			for (int j = 0; j < adjacent.length; j++) {
+				output += adjacent[j].getVertexNumber() + "\t";
+			}
+			output += "\n";
+		}
+		return output;
 	}
 	
 	public class ButtonListener implements EventHandler<ActionEvent> {

@@ -94,7 +94,7 @@ public class EulerView extends BorderPane implements Observer {
 //				Euler euler = new Euler(theGraph);
 //				String result = dfs.start(Integer.parseInt(text));
 				String result = euler.start(Integer.parseInt(text));
-				responseText.setText("Euler Path for Vertex " + text + " -> " + result); //theGraph.BFS(Integer.parseInt(text)));
+				responseText.setText(result); //theGraph.BFS(Integer.parseInt(text)));
 				euler = new Euler(Graph.graph1());
 				
 			} else {
